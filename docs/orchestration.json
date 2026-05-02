@@ -1,0 +1,13 @@
+{
+  "project": "homebrew-tap",
+  "owner": "rogerchappel",
+  "tap": "rogerchappel/tap",
+  "sourceOfTruth": "catalog/tools.json",
+  "generated": ["Formula/*.rb"],
+  "gates": ["npm test", "npm run validate", "ruby -c Formula/*.rb"],
+  "releasePolicy": {
+    "initialMode": "head-only",
+    "requiresImmutableArchiveForSha256": true,
+    "forbidInventedChecksums": true
+  }
+}
