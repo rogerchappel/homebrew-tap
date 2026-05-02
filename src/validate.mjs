@@ -17,7 +17,7 @@ export function validateCatalog(catalog) {
     if (!tool.repo?.startsWith('https://github.com/rogerchappel/')) errors.push(`${label}: repo must be a public rogerchappel GitHub HTTPS URL`);
     if (!Array.isArray(tool.bin) || tool.bin.length === 0) errors.push(`${label}: at least one bin command is required`);
     if (tool.status !== 'head-only') errors.push(`${label}: only head-only formulae are allowed until releases and checksums exist`);
-    if (/sha256|bottle|binary/i.test(JSON.stringify(tool))) errors.push(`${label}: catalog must not claim checksums, bottles, or binaries`);
+    if ('sha256' in tool || 'bottle' in tool || 'url' in tool) errors.push(`${label}: catalog must not claim release URLs, checksums, or bottles`);
     if (!tool.caveat?.includes('HEAD')) errors.push(`${label}: caveat must clearly say HEAD/source install`);
   }
   return errors;
@@ -45,7 +45,7 @@ export function validateReadme(catalog, root = process.cwd()) {
     if (!readme.includes(tool.summary)) errors.push(`${tool.name}: README missing summary`);
   }
   if (!readme.includes('brew tap rogerchappel/tap')) errors.push('README missing tap command');
-  if (/sha256|bottle/i.test(readme)) errors.push('README must not claim checksums or bottles');
+  if (/sha256:\s*[a-f0-9]{20,}|bottle do/i.test(readme)) errors.push('README must not claim concrete checksums or bottles');
   return errors;
 }
 
