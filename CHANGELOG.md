@@ -1,21 +1,8 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+## 0.1.0 - 2026-05-02
 
-This project follows the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
-format and uses semantic versioning when versioned releases are published.
-
-## [Unreleased]
-
-### Added
-
-- Initial project setup.
-
-## Release Links
-
-- Unreleased:
-  `https://github.com/rogerchappel/tmp-homebrew-tap-stackforge/compare/...HEAD`
-- Latest release:
-  `https://github.com/rogerchappel/tmp-homebrew-tap-stackforge/releases/latest`
-
-Replace placeholder links once the first release tag exists.
+- Created Roger's public Homebrew tap foundation.
+- Added generated HEAD-only formulas for six CLI tools.
+- Added catalog, generator, validator, tests, and CI.
+- Documented release workflow and safety policy for future formulas.
