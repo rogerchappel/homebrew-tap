@@ -16,12 +16,12 @@ All formulas in this first cut are **HEAD-only source installs**. That is delibe
 
 | Tool | What it does | Install |
 | --- | --- | --- |
-| 🏗️ `stackforge` | Agent-friendly project scaffolding for OSS apps, APIs, and CLIs. | `brew install --HEAD rogerchappel/tap/stackforge` |
-| 🌿 `branchbrief` | Turn branch changes into crisp review briefings. | `brew install --HEAD rogerchappel/tap/branchbrief` |
-| 🧾 `taskbrief` | Parse product prompts into reviewable engineering task briefs. | `brew install --HEAD rogerchappel/tap/taskbrief` |
-| 🧪 `proofdock` | Collect and check proof for agent-built software releases. | `brew install --HEAD rogerchappel/tap/proofdock` |
-| 🛰️ `envprobe` | Probe local development environments before agents make assumptions. | `brew install --HEAD rogerchappel/tap/envprobe` |
-| 🛡️ `worktreeguard` | Keep agent work inside safe isolated Git worktrees. | `brew install --HEAD rogerchappel/tap/worktreeguard` |
+| 🏗️ `stackforge` | Agent-friendly project scaffolding for OSS apps, APIs, and CLIs | `brew install --HEAD rogerchappel/tap/stackforge` |
+| 🌿 `branchbrief` | Turn branch changes into crisp review briefings | `brew install --HEAD rogerchappel/tap/branchbrief` |
+| 🧾 `taskbrief` | Parse product prompts into reviewable engineering task briefs | `brew install --HEAD rogerchappel/tap/taskbrief` |
+| 🧪 `proofdock` | Collect and check proof for agent-built software releases | `brew install --HEAD rogerchappel/tap/proofdock` |
+| 🛰️ `envprobe` | Probe local development environments before agents make assumptions | `brew install --HEAD rogerchappel/tap/envprobe` |
+| 🛡️ `worktreeguard` | Keep agent work inside safe isolated Git worktrees | `brew install --HEAD rogerchappel/tap/worktreeguard` |
 
 ## Validation
 
