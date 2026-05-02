@@ -5,7 +5,7 @@
     {
       "name": "stackforge",
       "emoji": "🏗️",
-      "summary": "Agent-friendly project scaffolding for OSS apps, APIs, and CLIs.",
+      "summary": "Agent-friendly project scaffolding for OSS apps, APIs, and CLIs",
       "repo": "https://github.com/rogerchappel/stackforge",
       "language": "node",
       "bin": [
@@ -28,7 +28,7 @@
     {
       "name": "branchbrief",
       "emoji": "🌿",
-      "summary": "Turn branch changes into crisp review briefings.",
+      "summary": "Turn branch changes into crisp review briefings",
       "repo": "https://github.com/rogerchappel/branchbrief",
       "language": "node",
       "bin": [
@@ -49,7 +49,7 @@
     {
       "name": "taskbrief",
       "emoji": "🧾",
-      "summary": "Parse product prompts into reviewable engineering task briefs.",
+      "summary": "Parse product prompts into reviewable engineering task briefs",
       "repo": "https://github.com/rogerchappel/taskbrief",
       "language": "node",
       "bin": [
@@ -70,7 +70,7 @@
     {
       "name": "proofdock",
       "emoji": "🧪",
-      "summary": "Collect and check proof for agent-built software releases.",
+      "summary": "Collect and check proof for agent-built software releases",
       "repo": "https://github.com/rogerchappel/proofdock",
       "language": "node",
       "bin": [
@@ -91,7 +91,7 @@
     {
       "name": "envprobe",
       "emoji": "🛰️",
-      "summary": "Probe local development environments before agents make assumptions.",
+      "summary": "Probe local development environments before agents make assumptions",
       "repo": "https://github.com/rogerchappel/envprobe",
       "language": "node",
       "bin": [
@@ -112,7 +112,7 @@
     {
       "name": "worktreeguard",
       "emoji": "🛡️",
-      "summary": "Keep agent work inside safe isolated Git worktrees.",
+      "summary": "Keep agent work inside safe isolated Git worktrees",
       "repo": "https://github.com/rogerchappel/worktreeguard",
       "language": "node",
       "bin": [
