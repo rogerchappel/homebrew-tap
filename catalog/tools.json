@@ -1,0 +1,134 @@
+{
+  "$schema": "./tools.schema.json",
+  "tap": "rogerchappel/homebrew-tap",
+  "tools": [
+    {
+      "name": "stackforge",
+      "emoji": "🏗️",
+      "summary": "Agent-friendly project scaffolding for OSS apps, APIs, and CLIs.",
+      "repo": "https://github.com/rogerchappel/stackforge",
+      "language": "node",
+      "bin": [
+        "stackforge",
+        "sf"
+      ],
+      "build": [
+        "pnpm install --frozen-lockfile",
+        "pnpm build"
+      ],
+      "install": [
+        "dist",
+        "package.json",
+        "templates"
+      ],
+      "status": "head-only",
+      "caveat": "HEAD formula: installs from source because packaged Homebrew release artifacts are not published yet.",
+      "binPath": "dist/index.js"
+    },
+    {
+      "name": "branchbrief",
+      "emoji": "🌿",
+      "summary": "Turn branch changes into crisp review briefings.",
+      "repo": "https://github.com/rogerchappel/branchbrief",
+      "language": "node",
+      "bin": [
+        "branchbrief"
+      ],
+      "build": [
+        "pnpm install --frozen-lockfile",
+        "pnpm build"
+      ],
+      "install": [
+        "dist",
+        "package.json"
+      ],
+      "status": "head-only",
+      "caveat": "HEAD formula draft for source installs; release tarball and checksum will be added once published.",
+      "binPath": "dist/cli.js"
+    },
+    {
+      "name": "taskbrief",
+      "emoji": "🧾",
+      "summary": "Parse product prompts into reviewable engineering task briefs.",
+      "repo": "https://github.com/rogerchappel/taskbrief",
+      "language": "node",
+      "bin": [
+        "taskbrief"
+      ],
+      "build": [
+        "pnpm install --frozen-lockfile",
+        "pnpm build"
+      ],
+      "install": [
+        "dist",
+        "package.json"
+      ],
+      "status": "head-only",
+      "caveat": "HEAD formula draft for source installs while release archives are not available.",
+      "binPath": "dist/cli.js"
+    },
+    {
+      "name": "proofdock",
+      "emoji": "🧪",
+      "summary": "Collect and check proof for agent-built software releases.",
+      "repo": "https://github.com/rogerchappel/proofdock",
+      "language": "node",
+      "bin": [
+        "proofdock"
+      ],
+      "build": [
+        "pnpm install --frozen-lockfile",
+        "pnpm build"
+      ],
+      "install": [
+        "dist",
+        "package.json"
+      ],
+      "status": "head-only",
+      "caveat": "HEAD formula draft; use for source validation until versioned release assets exist.",
+      "binPath": "dist/cli.js"
+    },
+    {
+      "name": "envprobe",
+      "emoji": "🛰️",
+      "summary": "Probe local development environments before agents make assumptions.",
+      "repo": "https://github.com/rogerchappel/envprobe",
+      "language": "node",
+      "bin": [
+        "envprobe"
+      ],
+      "build": [
+        "pnpm install --frozen-lockfile",
+        "pnpm build"
+      ],
+      "install": [
+        "src",
+        "package.json"
+      ],
+      "status": "head-only",
+      "caveat": "HEAD formula draft for source installs only.",
+      "binPath": "src/cli.js"
+    },
+    {
+      "name": "worktreeguard",
+      "emoji": "🛡️",
+      "summary": "Keep agent work inside safe isolated Git worktrees.",
+      "repo": "https://github.com/rogerchappel/worktreeguard",
+      "language": "node",
+      "bin": [
+        "worktreeguard"
+      ],
+      "build": [
+        "pnpm install --frozen-lockfile",
+        "pnpm build"
+      ],
+      "install": [
+        "src",
+        "package.json"
+      ],
+      "status": "head-only",
+      "caveat": "HEAD formula draft; no binary release is claimed.",
+      "binPath": "src/index.js"
+    }
+  ]
+}
