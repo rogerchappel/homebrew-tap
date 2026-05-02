@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Roger Homebrew Tap Catalog",
+  "type": "object",
+  "required": ["tap", "tools"],
+  "properties": {
+    "tap": { "type": "string", "pattern": "^[a-z0-9-]+/[a-z0-9-]+$" },
+    "tools": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "emoji", "summary", "repo", "language", "bin", "binPath", "build", "install", "status", "caveat"],
+        "properties": {
+          "name": { "type": "string" },
+          "emoji": { "type": "string" },
+          "summary": { "type": "string" },
+          "repo": { "type": "string" },
+          "language": { "type": "string", "enum": ["node"] },
+          "bin": { "type": "array", "items": { "type": "string" } },
+          "binPath": { "type": "string" },
+          "build": { "type": "array", "items": { "type": "string" } },
+          "install": { "type": "array", "items": { "type": "string" } },
+          "status": { "type": "string", "enum": ["head-only", "released"] },
+          "caveat": { "type": "string" }
+        }
+      }
+    }
+  }
+}
