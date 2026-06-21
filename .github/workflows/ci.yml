@@ -16,8 +16,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm test
-      - run: npm run validate
-      - run: ruby -c Formula/*.rb
+      - run: npm run release:check
       - run: brew style Formula/*.rb
         continue-on-error: true

@@ -13,7 +13,8 @@
     "catalog": "node src/cli.mjs catalog",
     "generate": "node src/cli.mjs generate",
     "check:readme": "node src/cli.mjs readme-check",
-    "check:ruby": "ruby -c Formula/*.rb"
+    "check:ruby": "ruby -c Formula/*.rb",
+    "release:check": "npm test && npm run validate && npm run check:ruby"
   },
   "engines": {
     "node": ">=20"
