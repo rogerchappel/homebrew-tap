@@ -26,9 +26,7 @@ All formulas in this first cut are **HEAD-only source installs**. That is delibe
 ## Validation
 
 ```bash
-npm test
-npm run validate
-ruby -c Formula/*.rb
+npm run release:check
 ```
 
 If Homebrew is available locally, you can also run:
