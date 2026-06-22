@@ -29,6 +29,9 @@ All formulas in this first cut are **HEAD-only source installs**. That is delibe
 npm run release:check
 ```
 
+The release check runs the node test suite, catalog/formula validation, README
+snippet validation, and Ruby syntax checks for every formula.
+
 If Homebrew is available locally, you can also run:
 
 ```bash
