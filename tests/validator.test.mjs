@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { loadCatalog } from '../src/catalog.mjs';
 import { renderFormula } from '../src/formula.mjs';
-import { validateCatalog, validateAll } from '../src/validate.mjs';
+import { validateCatalog, validateReadme, validateAll } from '../src/validate.mjs';
 
 const catalog = loadCatalog();
 
@@ -30,4 +30,11 @@ test('formula renderer emits safe source formula', () => {
 
 test('repository validates cleanly', () => {
   assert.deepEqual(validateAll(catalog), []);
+});
+
+test('README validator enforces every formula install snippet', () => {
+  const broken = structuredClone(catalog);
+  broken.tools[0].name = 'missing-tool';
+  const errors = validateReadme(broken);
+  assert.ok(errors.some((error) => error.includes('missing-tool: README missing install snippet')));
 });
