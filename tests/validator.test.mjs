@@ -21,6 +21,24 @@ test('catalog validator rejects invented release claims', () => {
   assert.ok(errors.some((error) => error.includes('checksums')));
 });
 
+test('catalog validator requires formula build and install metadata', () => {
+  const broken = structuredClone(catalog);
+  broken.tools[0].build = [];
+  broken.tools[0].install = [];
+  const errors = validateCatalog(broken);
+  assert.ok(errors.some((error) => error.includes('at least one build command')));
+  assert.ok(errors.some((error) => error.includes('at least one install path')));
+});
+
+test('catalog validator rejects unsafe bin path metadata', () => {
+  const broken = structuredClone(catalog);
+  broken.tools[0].bin = ['StackForge'];
+  broken.tools[0].binPath = '../dist/index.js';
+  const errors = validateCatalog(broken);
+  assert.ok(errors.some((error) => error.includes('bin commands must be lowercase kebab-case')));
+  assert.ok(errors.some((error) => error.includes('binPath must not escape')));
+});
+
 test('formula renderer emits safe source formula', () => {
   const text = renderFormula(catalog.tools[0]);
   assert.match(text, /head "https:\/\/github.com\/rogerchappel\//);
