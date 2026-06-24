@@ -16,6 +16,11 @@ export function validateCatalog(catalog) {
     seen.add(tool.name);
     if (!tool.repo?.startsWith('https://github.com/rogerchappel/')) errors.push(`${label}: repo must be a public rogerchappel GitHub HTTPS URL`);
     if (!Array.isArray(tool.bin) || tool.bin.length === 0) errors.push(`${label}: at least one bin command is required`);
+    if (!tool.bin?.every((name) => namePattern.test(name))) errors.push(`${label}: bin commands must be lowercase kebab-case`);
+    if (!Array.isArray(tool.build) || tool.build.length === 0) errors.push(`${label}: at least one build command is required`);
+    if (!Array.isArray(tool.install) || tool.install.length === 0) errors.push(`${label}: at least one install path is required`);
+    if (tool.binPath && path.isAbsolute(tool.binPath)) errors.push(`${label}: binPath must be package-relative`);
+    if (tool.binPath?.includes('..')) errors.push(`${label}: binPath must not escape the package root`);
     if (tool.status !== 'head-only') errors.push(`${label}: only head-only formulae are allowed until releases and checksums exist`);
     if ('sha256' in tool || 'bottle' in tool || 'url' in tool) errors.push(`${label}: catalog must not claim release URLs, checksums, or bottles`);
     if (!tool.caveat?.includes('HEAD')) errors.push(`${label}: caveat must clearly say HEAD/source install`);

@@ -13,6 +13,16 @@ npm run validate
 
 Commit the catalog and generated formula together.
 
+Before opening the PR, confirm each changed catalog entry has:
+
+- At least one lowercase CLI command in `bin`.
+- The build commands needed for a source checkout.
+- Every runtime path the generated formula must copy into `libexec`.
+- A package-relative `binPath` when the command is not at `dist/<command>`.
+
+`npm run validate` checks these fields so malformed formula metadata fails before
+it reaches Homebrew users.
+
 ## Graduating to released formula
 
 Only add a stable release formula when the upstream project has:
