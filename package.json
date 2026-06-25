@@ -28,5 +28,17 @@
   "engines": {
     "node": ">=20"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "files": [
+    "Formula",
+    "catalog",
+    "docs",
+    "src",
+    "tests",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md"
+  ]
 }
