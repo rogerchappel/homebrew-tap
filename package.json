@@ -41,5 +41,12 @@
     "CHANGELOG.md",
     "CONTRIBUTING.md",
     "SECURITY.md"
+  ],
+  "keywords": [
+    "homebrew",
+    "tap",
+    "formula",
+    "catalog",
+    "release-readiness"
   ]
 }
