@@ -7,12 +7,11 @@ class Proofdock < Formula
   homepage "https://github.com/rogerchappel/proofdock"
   head "https://github.com/rogerchappel/proofdock.git", branch: "main"
 
-  depends_on "pnpm" => :build
   depends_on "node"
 
   def install
-    system "pnpm", "install", "--frozen-lockfile"
-    system "pnpm", "build"
+    system "npm", "ci"
+    system "npm", "run", "build"
     libexec.install "dist"
     libexec.install "package.json"
     libexec.install "pnpm-lock.yaml" if File.exist?("pnpm-lock.yaml")

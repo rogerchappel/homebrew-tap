@@ -7,12 +7,11 @@ class Worktreeguard < Formula
   homepage "https://github.com/rogerchappel/worktreeguard"
   head "https://github.com/rogerchappel/worktreeguard.git", branch: "main"
 
-  depends_on "pnpm" => :build
   depends_on "node"
 
   def install
-    system "pnpm", "install", "--frozen-lockfile"
-    system "pnpm", "build"
+    system "npm", "ci"
+    system "npm", "run", "build"
     libexec.install "src"
     libexec.install "package.json"
     libexec.install "pnpm-lock.yaml" if File.exist?("pnpm-lock.yaml")
