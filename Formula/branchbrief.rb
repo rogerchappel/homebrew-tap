@@ -28,6 +28,6 @@ class Branchbrief < Formula
   end
 
   test do
-    assert_match "branchbrief", shell_output("#{bin}/branchbrief --help", 2)
+    assert_match "branchbrief", shell_output("#{bin}/branchbrief --help")
   end
 end

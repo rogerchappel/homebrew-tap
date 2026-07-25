@@ -28,6 +28,6 @@ class Taskbrief < Formula
   end
 
   test do
-    assert_match "taskbrief", shell_output("#{bin}/taskbrief --help", 2)
+    assert_match "taskbrief", shell_output("#{bin}/taskbrief --help")
   end
 end
