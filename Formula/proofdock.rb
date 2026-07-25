@@ -16,6 +16,7 @@ class Proofdock < Formula
     libexec.install "package.json"
     libexec.install "pnpm-lock.yaml" if File.exist?("pnpm-lock.yaml")
     libexec.install "node_modules" if File.directory?("node_modules")
+    chmod 0755, libexec/"dist/cli.js"
     bin.install_symlink libexec/"dist/cli.js" => "proofdock"
   end
 

@@ -18,6 +18,7 @@ class Stackforge < Formula
     libexec.install "templates"
     libexec.install "pnpm-lock.yaml" if File.exist?("pnpm-lock.yaml")
     libexec.install "node_modules" if File.directory?("node_modules")
+    chmod 0755, libexec/"dist/index.js"
     bin.install_symlink libexec/"dist/index.js" => "stackforge"
     bin.install_symlink libexec/"dist/index.js" => "sf"
   end
