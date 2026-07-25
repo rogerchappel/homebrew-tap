@@ -46,6 +46,12 @@ test('formula renderer emits safe source formula', () => {
   assert.match(text, /depends_on "node"/);
 });
 
+test('formula renderer expects --help to exit successfully', () => {
+  const text = renderFormula(catalog.tools[0]);
+  assert.match(text, /shell_output\("#\{bin\}\/stackforge --help"\)/);
+  assert.doesNotMatch(text, /shell_output\([^)]*,\s*2\)/);
+});
+
 test('repository validates cleanly', () => {
   assert.deepEqual(validateAll(catalog), []);
 });
