@@ -19,3 +19,20 @@ jobs:
       - run: npm run release:check
       - run: brew style Formula/*.rb
         continue-on-error: true
+
+  formula-smoke:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        formula:
+          - branchbrief
+          - envprobe
+          - proofdock
+          - stackforge
+          - taskbrief
+          - worktreeguard
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install --HEAD "./Formula/${{ matrix.formula }}.rb"
+      - run: brew test "${{ matrix.formula }}"
