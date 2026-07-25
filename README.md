@@ -37,9 +37,16 @@ If Homebrew is available locally, you can also run:
 ```bash
 brew audit --strict --online --new Formula/*.rb
 brew style Formula/*.rb
+for formula in Formula/*.rb; do
+  brew install --HEAD "$formula"
+  brew test "$(basename "$formula" .rb)"
+done
 ```
 
 Some audit warnings are expected until versioned source archives exist; the important safety line is that formulas remain source-only and never include invented checksums.
+The functional smoke installs each formula from its current HEAD source and runs
+its generated `test do` block. CI applies this check to every curated formula;
+when adding a catalog entry, add its name to the `formula-smoke` matrix too.
 
 ## Updating formulas
 
