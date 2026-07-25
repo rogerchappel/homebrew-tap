@@ -17,7 +17,8 @@ class Envprobe < Formula
     libexec.install "pnpm-lock.yaml" if File.exist?("pnpm-lock.yaml")
     libexec.install "node_modules" if File.directory?("node_modules")
     chmod 0755, libexec/"src/cli.js"
-    bin.write_exec_script libexec/"src/cli.js", "envprobe"
+    bin.write_exec_script libexec/"src/cli.js"
+    mv bin/"cli.js", bin/"envprobe"
   end
 
   def caveats

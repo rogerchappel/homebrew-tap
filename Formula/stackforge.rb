@@ -19,8 +19,10 @@ class Stackforge < Formula
     libexec.install "pnpm-lock.yaml" if File.exist?("pnpm-lock.yaml")
     libexec.install "node_modules" if File.directory?("node_modules")
     chmod 0755, libexec/"dist/index.js"
-    bin.write_exec_script libexec/"dist/index.js", "stackforge"
-    bin.write_exec_script libexec/"dist/index.js", "sf"
+    bin.write_exec_script libexec/"dist/index.js"
+    mv bin/"index.js", bin/"stackforge"
+    bin.write_exec_script libexec/"dist/index.js"
+    mv bin/"index.js", bin/"sf"
   end
 
   def caveats

@@ -17,7 +17,8 @@ class Worktreeguard < Formula
     libexec.install "pnpm-lock.yaml" if File.exist?("pnpm-lock.yaml")
     libexec.install "node_modules" if File.directory?("node_modules")
     chmod 0755, libexec/"src/index.js"
-    bin.write_exec_script libexec/"src/index.js", "worktreeguard"
+    bin.write_exec_script libexec/"src/index.js"
+    mv bin/"index.js", bin/"worktreeguard"
   end
 
   def caveats
