@@ -44,6 +44,7 @@ test('formula renderer emits safe source formula', () => {
   assert.match(text, /head "https:\/\/github.com\/rogerchappel\//);
   assert.doesNotMatch(text, /sha256|bottle do|url "/i);
   assert.match(text, /depends_on "node"/);
+  assert.match(text, /bin\.write_exec_script libexec\/"dist\/index\.js", "stackforge"/);
 });
 
 test('formula renderer only adds pnpm when the build uses it', () => {

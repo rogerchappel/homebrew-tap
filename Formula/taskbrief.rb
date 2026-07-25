@@ -17,7 +17,7 @@ class Taskbrief < Formula
     libexec.install "pnpm-lock.yaml" if File.exist?("pnpm-lock.yaml")
     libexec.install "node_modules" if File.directory?("node_modules")
     chmod 0755, libexec/"dist/cli.js"
-    bin.install_symlink libexec/"dist/cli.js" => "taskbrief"
+    bin.write_exec_script libexec/"dist/cli.js", "taskbrief"
   end
 
   def caveats
