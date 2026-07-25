@@ -28,6 +28,6 @@ class Envprobe < Formula
   end
 
   test do
-    assert_match "envprobe", shell_output("#{bin}/envprobe --help")
+    assert_match "envprobe", shell_output("#{bin}/envprobe --help 2>&1")
   end
 end

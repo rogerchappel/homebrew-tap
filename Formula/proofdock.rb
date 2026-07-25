@@ -28,6 +28,6 @@ class Proofdock < Formula
   end
 
   test do
-    assert_match "proofdock", shell_output("#{bin}/proofdock --help")
+    assert_match "proofdock", shell_output("#{bin}/proofdock --help 2>&1")
   end
 end

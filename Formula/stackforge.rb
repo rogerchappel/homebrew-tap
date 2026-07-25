@@ -31,6 +31,6 @@ class Stackforge < Formula
   end
 
   test do
-    assert_match "stackforge", shell_output("#{bin}/stackforge --help")
+    assert_match "stackforge", shell_output("#{bin}/stackforge --help 2>&1")
   end
 end

@@ -54,7 +54,7 @@ test('formula renderer only adds pnpm when the build uses it', () => {
 test('formula renderer expects --help to exit successfully', () => {
   const text = renderFormula(catalog.tools[0]);
   assert.match(text, /chmod 0755, libexec\/"dist\/index\.js"/);
-  assert.match(text, /shell_output\("#\{bin\}\/stackforge --help"\)/);
+  assert.match(text, /shell_output\("#\{bin\}\/stackforge --help 2>&1"\)/);
   assert.doesNotMatch(text, /shell_output\([^)]*,\s*2\)/);
 });
 

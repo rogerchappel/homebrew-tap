@@ -28,6 +28,6 @@ class Worktreeguard < Formula
   end
 
   test do
-    assert_match "worktreeguard", shell_output("#{bin}/worktreeguard --help")
+    assert_match "worktreeguard", shell_output("#{bin}/worktreeguard --help 2>&1")
   end
 end
