@@ -37,9 +37,11 @@ If Homebrew is available locally, you can also run:
 ```bash
 brew audit --strict --online --new Formula/*.rb
 brew style Formula/*.rb
+brew tap rogerchappel/tap "$PWD"
 for formula in Formula/*.rb; do
-  brew install --HEAD "$formula"
-  brew test "$(basename "$formula" .rb)"
+  name="$(basename "$formula" .rb)"
+  brew install --HEAD "rogerchappel/tap/$name"
+  brew test "rogerchappel/tap/$name"
 done
 ```
 
