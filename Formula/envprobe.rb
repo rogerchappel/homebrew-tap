@@ -7,17 +7,18 @@ class Envprobe < Formula
   homepage "https://github.com/rogerchappel/envprobe"
   head "https://github.com/rogerchappel/envprobe.git", branch: "main"
 
-  depends_on "pnpm" => :build
   depends_on "node"
 
   def install
-    system "pnpm", "install", "--frozen-lockfile"
-    system "pnpm", "build"
+    system "npm", "ci"
+    system "npm", "run", "build"
     libexec.install "src"
     libexec.install "package.json"
     libexec.install "pnpm-lock.yaml" if File.exist?("pnpm-lock.yaml")
     libexec.install "node_modules" if File.directory?("node_modules")
-    bin.install_symlink libexec/"src/cli.js" => "envprobe"
+    chmod 0755, libexec/"src/cli.js"
+    bin.write_exec_script libexec/"src/cli.js"
+    mv bin/"cli.js", bin/"envprobe"
   end
 
   def caveats
@@ -28,6 +29,6 @@ class Envprobe < Formula
   end
 
   test do
-    assert_match "envprobe", shell_output("#{bin}/envprobe --help", 2)
+    assert_match "envprobe", shell_output("#{bin}/envprobe --help 2>&1")
   end
 end

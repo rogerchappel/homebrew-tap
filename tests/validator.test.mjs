@@ -44,6 +44,19 @@ test('formula renderer emits safe source formula', () => {
   assert.match(text, /head "https:\/\/github.com\/rogerchappel\//);
   assert.doesNotMatch(text, /sha256|bottle do|url "/i);
   assert.match(text, /depends_on "node"/);
+  assert.match(text, /bin\.write_exec_script libexec\/"dist\/index\.js"\n\s+mv bin\/"index\.js", bin\/"stackforge"/);
+});
+
+test('formula renderer only adds pnpm when the build uses it', () => {
+  assert.match(renderFormula(catalog.tools.find((tool) => tool.name === 'stackforge')), /depends_on "pnpm" => :build/);
+  assert.doesNotMatch(renderFormula(catalog.tools.find((tool) => tool.name === 'branchbrief')), /depends_on "pnpm"/);
+});
+
+test('formula renderer expects --help to exit successfully', () => {
+  const text = renderFormula(catalog.tools[0]);
+  assert.match(text, /chmod 0755, libexec\/"dist\/index\.js"/);
+  assert.match(text, /shell_output\("#\{bin\}\/stackforge --help 2>&1"\)/);
+  assert.doesNotMatch(text, /shell_output\([^)]*,\s*2\)/);
 });
 
 test('repository validates cleanly', () => {

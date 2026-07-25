@@ -7,17 +7,18 @@ class Taskbrief < Formula
   homepage "https://github.com/rogerchappel/taskbrief"
   head "https://github.com/rogerchappel/taskbrief.git", branch: "main"
 
-  depends_on "pnpm" => :build
   depends_on "node"
 
   def install
-    system "pnpm", "install", "--frozen-lockfile"
-    system "pnpm", "build"
+    system "npm", "ci"
+    system "npm", "run", "build"
     libexec.install "dist"
     libexec.install "package.json"
     libexec.install "pnpm-lock.yaml" if File.exist?("pnpm-lock.yaml")
     libexec.install "node_modules" if File.directory?("node_modules")
-    bin.install_symlink libexec/"dist/cli.js" => "taskbrief"
+    chmod 0755, libexec/"dist/cli.js"
+    bin.write_exec_script libexec/"dist/cli.js"
+    mv bin/"cli.js", bin/"taskbrief"
   end
 
   def caveats
@@ -28,6 +29,6 @@ class Taskbrief < Formula
   end
 
   test do
-    assert_match "taskbrief", shell_output("#{bin}/taskbrief --help", 2)
+    assert_match "taskbrief", shell_output("#{bin}/taskbrief --help 2>&1")
   end
 end

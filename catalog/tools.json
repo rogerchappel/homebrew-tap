@@ -35,8 +35,8 @@
         "branchbrief"
       ],
       "build": [
-        "pnpm install --frozen-lockfile",
-        "pnpm build"
+        "npm ci",
+        "npm run build"
       ],
       "install": [
         "dist",
@@ -56,8 +56,8 @@
         "taskbrief"
       ],
       "build": [
-        "pnpm install --frozen-lockfile",
-        "pnpm build"
+        "npm ci",
+        "npm run build"
       ],
       "install": [
         "dist",
@@ -77,8 +77,8 @@
         "proofdock"
       ],
       "build": [
-        "pnpm install --frozen-lockfile",
-        "pnpm build"
+        "npm ci",
+        "npm run build"
       ],
       "install": [
         "dist",
@@ -98,8 +98,8 @@
         "envprobe"
       ],
       "build": [
-        "pnpm install --frozen-lockfile",
-        "pnpm build"
+        "npm ci",
+        "npm run build"
       ],
       "install": [
         "src",
@@ -119,8 +119,8 @@
         "worktreeguard"
       ],
       "build": [
-        "pnpm install --frozen-lockfile",
-        "pnpm build"
+        "npm ci",
+        "npm run build"
       ],
       "install": [
         "src",

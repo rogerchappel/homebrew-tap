@@ -7,17 +7,18 @@ class Worktreeguard < Formula
   homepage "https://github.com/rogerchappel/worktreeguard"
   head "https://github.com/rogerchappel/worktreeguard.git", branch: "main"
 
-  depends_on "pnpm" => :build
   depends_on "node"
 
   def install
-    system "pnpm", "install", "--frozen-lockfile"
-    system "pnpm", "build"
+    system "npm", "ci"
+    system "npm", "run", "build"
     libexec.install "src"
     libexec.install "package.json"
     libexec.install "pnpm-lock.yaml" if File.exist?("pnpm-lock.yaml")
     libexec.install "node_modules" if File.directory?("node_modules")
-    bin.install_symlink libexec/"src/index.js" => "worktreeguard"
+    chmod 0755, libexec/"src/index.js"
+    bin.write_exec_script libexec/"src/index.js"
+    mv bin/"index.js", bin/"worktreeguard"
   end
 
   def caveats
@@ -28,6 +29,6 @@ class Worktreeguard < Formula
   end
 
   test do
-    assert_match "worktreeguard", shell_output("#{bin}/worktreeguard --help", 2)
+    assert_match "worktreeguard", shell_output("#{bin}/worktreeguard --help 2>&1")
   end
 end

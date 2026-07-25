@@ -18,8 +18,11 @@ class Stackforge < Formula
     libexec.install "templates"
     libexec.install "pnpm-lock.yaml" if File.exist?("pnpm-lock.yaml")
     libexec.install "node_modules" if File.directory?("node_modules")
-    bin.install_symlink libexec/"dist/index.js" => "stackforge"
-    bin.install_symlink libexec/"dist/index.js" => "sf"
+    chmod 0755, libexec/"dist/index.js"
+    bin.write_exec_script libexec/"dist/index.js"
+    mv bin/"index.js", bin/"stackforge"
+    bin.write_exec_script libexec/"dist/index.js"
+    mv bin/"index.js", bin/"sf"
   end
 
   def caveats
@@ -30,6 +33,6 @@ class Stackforge < Formula
   end
 
   test do
-    assert_match "stackforge", shell_output("#{bin}/stackforge --help", 2)
+    assert_match "stackforge", shell_output("#{bin}/stackforge --help 2>&1")
   end
 end
