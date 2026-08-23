@@ -1,10 +1,33 @@
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import test from 'node:test';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { loadCatalog } from '../src/catalog.mjs';
 import { renderFormula } from '../src/formula.mjs';
 import { validateCatalog, validateReadme, validateAll } from '../src/validate.mjs';
 
 const catalog = loadCatalog();
+const repositoryRoot = fileURLToPath(new URL('..', import.meta.url));
+
+test('CLI and catalog loading work from a path containing spaces', async (t) => {
+  const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'tapring-path-'));
+  const spacedRoot = path.join(temporaryRoot, 'checkout with spaces');
+  fs.cpSync(repositoryRoot, spacedRoot, { recursive: true });
+  t.after(() => fs.rmSync(temporaryRoot, { recursive: true, force: true }));
+
+  const cliPath = path.join(spacedRoot, 'src', 'cli.mjs');
+  const cliOutput = execFileSync(process.execPath, [cliPath, 'catalog'], {
+    encoding: 'utf8',
+  });
+  assert.match(cliOutput, /stackforge/);
+  assert.match(execFileSync(process.execPath, [cliPath, 'validate'], { encoding: 'utf8' }), /valid/i);
+
+  const spacedCatalogModule = await import(pathToFileURL(path.join(spacedRoot, 'src', 'catalog.mjs')));
+  assert.equal(spacedCatalogModule.loadCatalog().tap, 'rogerchappel/homebrew-tap');
+});
 
 test('catalog contains curated HEAD-only tools', () => {
   assert.equal(catalog.tap, 'rogerchappel/homebrew-tap');
