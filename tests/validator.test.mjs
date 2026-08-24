@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -91,4 +91,40 @@ test('README validator enforces every formula install snippet', () => {
   broken.tools[0].name = 'missing-tool';
   const errors = validateReadme(broken);
   assert.ok(errors.some((error) => error.includes('missing-tool: README missing install snippet')));
+});
+
+test('Homebrew validation uses named formulae and propagates failures', (t) => {
+  const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'tapring-brew-validation-'));
+  const binRoot = path.join(temporaryRoot, 'bin');
+  const callsPath = path.join(temporaryRoot, 'brew-calls');
+  fs.mkdirSync(binRoot);
+  t.after(() => fs.rmSync(temporaryRoot, { recursive: true, force: true }));
+
+  fs.writeFileSync(path.join(binRoot, 'npm'), '#!/bin/sh\nexit 0\n', { mode: 0o755 });
+  fs.writeFileSync(
+    path.join(binRoot, 'brew'),
+    `#!/bin/sh\nprintf '%s\\n' "$*" >> "$BREW_CALLS"\n[ "$1" != "$BREW_FAIL_COMMAND" ]\n`,
+    { mode: 0o755 },
+  );
+
+  const auditCall = 'audit --strict --online --new rogerchappel/tap/branchbrief rogerchappel/tap/envprobe rogerchappel/tap/proofdock rogerchappel/tap/stackforge rogerchappel/tap/taskbrief rogerchappel/tap/worktreeguard';
+  for (const [failingCommand, expectedCalls] of [
+    ['audit', auditCall],
+    ['style', `${auditCall}\nstyle --formula rogerchappel/tap/branchbrief rogerchappel/tap/envprobe rogerchappel/tap/proofdock rogerchappel/tap/stackforge rogerchappel/tap/taskbrief rogerchappel/tap/worktreeguard`],
+  ]) {
+    fs.rmSync(callsPath, { force: true });
+    const result = spawnSync('bash', [path.join(repositoryRoot, 'scripts', 'validate.sh')], {
+      cwd: repositoryRoot,
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        BREW_CALLS: callsPath,
+        BREW_FAIL_COMMAND: failingCommand,
+        PATH: `${binRoot}${path.delimiter}${process.env.PATH}`,
+      },
+    });
+
+    assert.notEqual(result.status, 0, `a failing brew ${failingCommand} must fail validation`);
+    assert.equal(fs.readFileSync(callsPath, 'utf8').trim(), expectedCalls);
+  }
 });
