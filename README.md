@@ -35,8 +35,20 @@ snippet validation, and Ruby syntax checks for every formula.
 If Homebrew is available locally, you can also run:
 
 ```bash
-brew audit --strict --online --new Formula/*.rb
-brew style Formula/*.rb
+brew audit --strict --online --new \
+  rogerchappel/tap/branchbrief \
+  rogerchappel/tap/envprobe \
+  rogerchappel/tap/proofdock \
+  rogerchappel/tap/stackforge \
+  rogerchappel/tap/taskbrief \
+  rogerchappel/tap/worktreeguard
+brew style --formula \
+  rogerchappel/tap/branchbrief \
+  rogerchappel/tap/envprobe \
+  rogerchappel/tap/proofdock \
+  rogerchappel/tap/stackforge \
+  rogerchappel/tap/taskbrief \
+  rogerchappel/tap/worktreeguard
 brew tap rogerchappel/tap "$PWD"
 for formula in Formula/*.rb; do
   name="$(basename "$formula" .rb)"
@@ -45,7 +57,8 @@ for formula in Formula/*.rb; do
 done
 ```
 
-Some audit warnings are expected until versioned source archives exist; the important safety line is that formulas remain source-only and never include invented checksums.
+Audit and style failures are blocking; formulas remain source-only and never
+include invented checksums.
 The functional smoke installs each formula from its current HEAD source and runs
 its generated `test do` block. CI applies this check to every curated formula;
 when adding a catalog entry, add its name to the `formula-smoke` matrix too.
