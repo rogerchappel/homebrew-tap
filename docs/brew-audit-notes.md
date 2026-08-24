@@ -1,5 +1,8 @@
 # Homebrew Audit Notes
 
-`brew audit --strict --online --new Formula/*.rb` is useful before releases, but this tap may intentionally differ from fully released core formulae while entries are HEAD-only.
+Homebrew audits local tap formulae by name. Run `./scripts/validate.sh` after
+tapping this checkout to audit and style all six formulae with their fully
+qualified `rogerchappel/tap/<name>` names.
 
-Expected early warnings can include missing stable `url` or livecheck metadata. Unexpected failures include Ruby syntax errors, bad class names, broken dependencies, or invented checksums.
+Audit and style findings fail validation. HEAD-only formulae remain valid
+without invented stable URLs, checksums, or livecheck metadata.
