@@ -54,10 +54,41 @@ export function validateReadme(catalog, root = process.cwd()) {
   return errors;
 }
 
+export function buildModeLabel(build) {
+  if (!Array.isArray(build)) return '';
+  if (build.some((command) => command.startsWith('pnpm'))) return 'pnpm build';
+  if (build.includes('npm run build')) return 'npm ci + npm run build';
+  return build.join('; ');
+}
+
+export function validateToolCatalog(catalog, root = process.cwd()) {
+  const errors = [];
+  const file = path.join(root, 'docs', 'tool-catalog.md');
+  if (!fs.existsSync(file)) return ['docs/tool-catalog.md is missing'];
+  const rows = fs
+    .readFileSync(file, 'utf8')
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line.startsWith('|') && !line.startsWith('| ---') && !line.startsWith('| Tool'))
+    .map((line) => line.replace(/^\||\|$/g, '').split('|').map((cell) => cell.trim().replace(/^`|`$/g, '')));
+  for (const tool of catalog.tools || []) {
+    const row = rows.find((cells) => cells[0] === tool.name);
+    if (!row) {
+      errors.push(`${tool.name}: docs/tool-catalog.md missing row`);
+      continue;
+    }
+    if (row[1] !== tool.binPath) errors.push(`${tool.name}: docs/tool-catalog.md entrypoint "${row[1]}" does not match catalog binPath "${tool.binPath}"`);
+    const expected = buildModeLabel(tool.build);
+    if (row[2] !== expected) errors.push(`${tool.name}: docs/tool-catalog.md build mode "${row[2]}" does not match catalog build "${expected}"`);
+  }
+  return errors;
+}
+
 export function validateAll(catalog, root = process.cwd()) {
   return [
     ...validateCatalog(catalog),
     ...catalog.tools.flatMap((tool) => validateFormula(tool, root)),
-    ...validateReadme(catalog, root)
+    ...validateReadme(catalog, root),
+    ...validateToolCatalog(catalog, root)
   ];
 }
