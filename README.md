@@ -35,6 +35,7 @@ snippet validation, and Ruby syntax checks for every formula.
 If Homebrew is available locally, you can also run:
 
 ```bash
+brew tap rogerchappel/tap "$PWD"
 brew audit --strict --online --new \
   rogerchappel/tap/branchbrief \
   rogerchappel/tap/envprobe \
@@ -49,7 +50,6 @@ brew style --formula \
   rogerchappel/tap/stackforge \
   rogerchappel/tap/taskbrief \
   rogerchappel/tap/worktreeguard
-brew tap rogerchappel/tap "$PWD"
 for formula in Formula/*.rb; do
   name="$(basename "$formula" .rb)"
   brew install --HEAD "rogerchappel/tap/$name"
