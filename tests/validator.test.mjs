@@ -29,6 +29,16 @@ test('CLI and catalog loading work from a path containing spaces', async (t) => 
   assert.equal(spacedCatalogModule.loadCatalog().tap, 'rogerchappel/homebrew-tap');
 });
 
+test('CLI rejects unknown commands with help', () => {
+  const result = spawnSync(process.execPath, [path.join(repositoryRoot, 'src', 'cli.mjs'), 'typo'], {
+    encoding: 'utf8',
+  });
+
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /unknown command: typo/i);
+  assert.match(result.stdout, /Commands:/);
+});
+
 test('catalog contains curated HEAD-only tools', () => {
   assert.equal(catalog.tap, 'rogerchappel/homebrew-tap');
   assert.ok(catalog.tools.length >= 6);
@@ -92,6 +102,20 @@ test('single-bin formulae emit one help check', () => {
 
 test('repository validates cleanly', () => {
   assert.deepEqual(validateAll(catalog), []);
+});
+
+test('validator rejects formulae absent from the catalog', (t) => {
+  const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'tapring-orphan-formula-'));
+  fs.cpSync(repositoryRoot, temporaryRoot, { recursive: true });
+  t.after(() => fs.rmSync(temporaryRoot, { recursive: true, force: true }));
+
+  fs.copyFileSync(
+    path.join(temporaryRoot, 'Formula', 'branchbrief.rb'),
+    path.join(temporaryRoot, 'Formula', 'stale-tool.rb'),
+  );
+
+  const errors = validateAll(catalog, temporaryRoot);
+  assert.ok(errors.some((error) => error.includes('Formula/stale-tool.rb') && error.includes('catalog/tools.json')));
 });
 
 test('tool catalog docs build-mode column matches the catalog', () => {
