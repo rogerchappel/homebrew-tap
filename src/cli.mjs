@@ -26,6 +26,10 @@ if (command === 'catalog') {
     process.exit(1);
   }
   console.log(`✓ ${command === 'validate' ? 'tap catalog is valid' : 'README snippets are valid'}`);
-} else {
+} else if (command === 'help') {
   help();
+} else {
+  console.error(`Unknown command: ${command}`);
+  help();
+  process.exitCode = 1;
 }
