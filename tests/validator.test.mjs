@@ -145,10 +145,24 @@ test('build mode labels summarize catalog build commands', () => {
 });
 
 test('README validator enforces every formula install snippet', () => {
-  const broken = structuredClone(catalog);
-  broken.tools[0].name = 'missing-tool';
-  const errors = validateReadme(broken);
-  assert.ok(errors.some((error) => error.includes('missing-tool: README missing install snippet')));
+  const formula = catalog.tools[0];
+  const readme = fs.readFileSync(path.join(repositoryRoot, 'README.md'), 'utf8');
+  assert.deepEqual(validateReadme(catalog, repositoryRoot), []);
+
+  const brokenReadme = readme.replace(`brew install --HEAD rogerchappel/tap/${formula.name}`, 'brew install --HEAD rogerchappel/tap/removed-formula');
+  assert.notEqual(brokenReadme, readme, `README must include the ${formula.name} install snippet`);
+  const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'tapring-readme-'));
+  fs.writeFileSync(path.join(temporaryRoot, 'README.md'), brokenReadme);
+  try {
+    const errors = validateReadme(catalog, temporaryRoot);
+  assert.ok(errors.some((error) => error.includes(`${formula.name}: README missing install snippet`)));
+
+    const brokenCatalog = structuredClone(catalog);
+    brokenCatalog.tools[0].name = 'missing-tool';
+    assert.ok(validateReadme(brokenCatalog, repositoryRoot).some((error) => error.includes('missing-tool: README missing install snippet')));
+  } finally {
+    fs.rmSync(temporaryRoot, { recursive: true, force: true });
+  }
 });
 
 test('Homebrew validation uses named formulae and propagates failures', (t) => {
