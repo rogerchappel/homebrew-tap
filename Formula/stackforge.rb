@@ -11,13 +11,13 @@ class Stackforge < Formula
   depends_on "node"
 
   def install
+    libexec.install "node_modules" if File.directory?("node_modules")
     system "pnpm", "install", "--frozen-lockfile"
     system "pnpm", "build"
     libexec.install "dist"
     libexec.install "package.json"
     libexec.install "templates"
     libexec.install "pnpm-lock.yaml" if File.exist?("pnpm-lock.yaml")
-    libexec.install "node_modules" if File.directory?("node_modules")
     chmod 0755, libexec/"dist/index.js"
     bin.write_exec_script libexec/"dist/index.js"
     mv bin/"index.js", bin/"stackforge"
