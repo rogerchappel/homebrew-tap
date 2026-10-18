@@ -79,7 +79,15 @@ test('formula renderer expects --help to exit successfully', () => {
   const text = renderFormula(catalog.tools[0]);
   assert.match(text, /chmod 0755, libexec\/"dist\/index\.js"/);
   assert.match(text, /shell_output\("#\{bin\}\/stackforge --help 2>&1"\)/);
+  assert.match(text, /shell_output\("#\{bin\}\/sf --help 2>&1"\)/);
+  assert.equal(text.match(/shell_output/g)?.length, 2);
   assert.doesNotMatch(text, /shell_output\([^)]*,\s*2\)/);
+});
+
+test('single-bin formulae emit one help check', () => {
+  const text = renderFormula(catalog.tools.find((tool) => tool.name === 'branchbrief'));
+  assert.match(text, /shell_output\("#\{bin\}\/branchbrief --help 2>&1"\)/);
+  assert.equal(text.match(/shell_output/g)?.length, 1);
 });
 
 test('repository validates cleanly', () => {
