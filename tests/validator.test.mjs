@@ -80,6 +80,17 @@ test('formula renderer emits safe source formula', () => {
   assert.match(text, /bin\.write_exec_script libexec\/"dist\/index\.js"\n\s+mv bin\/"index\.js", bin\/"stackforge"/);
 });
 
+test('formula renderer stages pnpm build dependencies before invoking the build', () => {
+  const formula = renderFormula(catalog.tools.find((tool) => tool.name === 'stackforge'));
+  const dependencyStage = formula.indexOf('libexec.install "node_modules"');
+  const build = formula.indexOf('system "pnpm", "install", "--frozen-lockfile"');
+  assert.ok(dependencyStage >= 0 && dependencyStage < build, 'dependencies must be preserved before build changes the source checkout');
+  assert.equal(formula.match(/libexec\.install "node_modules"/g)?.length, 1);
+
+  const npmFormula = renderFormula(catalog.tools.find((tool) => tool.name === 'branchbrief'));
+  assert.ok(npmFormula.indexOf('system "npm"') < npmFormula.indexOf('libexec.install "node_modules"'));
+});
+
 test('formula renderer only adds pnpm when the build uses it', () => {
   assert.match(renderFormula(catalog.tools.find((tool) => tool.name === 'stackforge')), /depends_on "pnpm" => :build/);
   assert.doesNotMatch(renderFormula(catalog.tools.find((tool) => tool.name === 'branchbrief')), /depends_on "pnpm"/);
