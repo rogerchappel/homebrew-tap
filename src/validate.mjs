@@ -42,6 +42,18 @@ export function validateFormula(tool, root = process.cwd()) {
   return errors;
 }
 
+export function validateFormulaInventory(catalog, root = process.cwd()) {
+  const formulaDirectory = path.join(root, 'Formula');
+  const catalogNames = new Set((catalog.tools || []).map((tool) => tool.name));
+  return fs
+    .readdirSync(formulaDirectory, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && entry.name.endsWith('.rb'))
+    .map((entry) => entry.name.slice(0, -3))
+    .filter((name) => !catalogNames.has(name))
+    .sort()
+    .map((name) => `Formula/${name}.rb: no matching entry in catalog/tools.json`);
+}
+
 export function validateReadme(catalog, root = process.cwd()) {
   const errors = [];
   const readme = fs.readFileSync(path.join(root, 'README.md'), 'utf8');
@@ -87,6 +99,7 @@ export function validateToolCatalog(catalog, root = process.cwd()) {
 export function validateAll(catalog, root = process.cwd()) {
   return [
     ...validateCatalog(catalog),
+    ...validateFormulaInventory(catalog, root),
     ...catalog.tools.flatMap((tool) => validateFormula(tool, root)),
     ...validateReadme(catalog, root),
     ...validateToolCatalog(catalog, root)
