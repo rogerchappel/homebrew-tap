@@ -7,7 +7,7 @@ import test from 'node:test';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { loadCatalog } from '../src/catalog.mjs';
 import { renderFormula } from '../src/formula.mjs';
-import { validateCatalog, validateReadme, validateAll } from '../src/validate.mjs';
+import { buildModeLabel, validateAll, validateCatalog, validateReadme, validateToolCatalog } from '../src/validate.mjs';
 
 const catalog = loadCatalog();
 const repositoryRoot = fileURLToPath(new URL('..', import.meta.url));
@@ -84,6 +84,32 @@ test('formula renderer expects --help to exit successfully', () => {
 
 test('repository validates cleanly', () => {
   assert.deepEqual(validateAll(catalog), []);
+});
+
+test('tool catalog docs build-mode column matches the catalog', () => {
+  assert.deepEqual(validateToolCatalog(catalog), []);
+});
+
+test('tool catalog docs validator rejects build-mode drift', () => {
+  const broken = structuredClone(catalog);
+  broken.tools.find((tool) => tool.name === 'branchbrief').build = ['pnpm install --frozen-lockfile', 'pnpm build'];
+  const errors = validateToolCatalog(broken);
+  assert.ok(errors.some((error) => error.includes('branchbrief') && error.includes('build mode')));
+});
+
+test('tool catalog docs validator rejects entrypoint drift', () => {
+  const broken = structuredClone(catalog);
+  broken.tools[0].binPath = 'dist/other.js';
+  const errors = validateToolCatalog(broken);
+  assert.ok(errors.some((error) => error.includes('stackforge') && error.includes('entrypoint')));
+});
+
+test('build mode labels summarize catalog build commands', () => {
+  const byName = Object.fromEntries(catalog.tools.map((tool) => [tool.name, tool]));
+  assert.equal(buildModeLabel(byName.stackforge.build), 'pnpm build');
+  for (const name of ['branchbrief', 'taskbrief', 'proofdock', 'envprobe', 'worktreeguard']) {
+    assert.equal(buildModeLabel(byName[name].build), 'npm ci + npm run build');
+  }
 });
 
 test('README validator enforces every formula install snippet', () => {
